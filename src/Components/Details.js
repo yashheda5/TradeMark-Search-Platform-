@@ -19,8 +19,8 @@ export const Details = ({ details }) => {
   const formattedDate = `${formatDayWithOrdinal(registrationDate)} ${format(registrationDate, 'MMMM yyyy', { locale: enGB })}`;
 
   return (
-    <div className='flex flex-col gap-7 translate-x-[-3rem] max-w-[8rem]'>
-      <div>{details.current_owner}</div>
+    <div className='flex flex-col gap-7 translate-x-[-1rem] max-w-[8rem]'>
+      <div className='font-semibold'>{details.current_owner}</div>
       <div>{details.registration_number}</div>
       <div>{formattedDate}</div>
     </div>

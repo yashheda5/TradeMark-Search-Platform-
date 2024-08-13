@@ -7,7 +7,7 @@ export const Cards = ({ data }) => {
   }
 
   return (
-    <div>
+    <div className='rounded-lg shadow-2xl translate-x-4 '>
       <div className='flex w-[4/5] justify-between px-[7rem] pt-[5rem] pb-[1.5rem] font-semibold border-b-2'>
         <div>Mark</div>
         <div>Details</div>

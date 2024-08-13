@@ -10,7 +10,7 @@ export const Card = ({ item }) => {
     const description = markDescription.join(' ');
   
     return (
-      <div className='flex w-[100%] justify-between px-[7rem] pt-[2rem] pb-[1.5rem] translate-x-[-3rem]'>
+      <div className='flex w-[100%] justify-between px-[6rem] pt-[2rem] pb-[1.5rem] translate-x-[-3rem]'>
         <Image image={item.source.mark_identification} />
         <Details details={item.source} />
         <Status status={item.source.status_type} />
