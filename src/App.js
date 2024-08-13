@@ -4,7 +4,7 @@ import { Search } from './Components/Search';
 import { Cards } from './Components/Cards';
 import { Filter } from './Components/Filter';
 import { Spinner } from './Components/Spinner';
-import data from './Components/data'; // Import default export
+import data from './Components/data';
 
 function App() {
   const [filteredData, setFilteredData] = useState([]);
@@ -20,47 +20,47 @@ function App() {
   const [attorneys, setAttorneys] = useState([]);
 
   useEffect(() => {
-    setFilteredData(data.hits.hits);
+    // Initialize data and filters
+    const initialData = data.hits.hits;
+    setFilteredData(initialData);
 
-    const uniqueOwners = Array.from(new Set(data.hits.hits.map(item => item.source.current_owner)));
-    const uniqueLawFirms = Array.from(new Set(data.hits.hits.map(item => item.source.law_firm || '')));
-    const uniqueAttorneys = Array.from(new Set(data.hits.hits.map(item => item.source.attorney_name || '')));
+    const uniqueOwners = Array.from(new Set(initialData.map(item => item.source.current_owner).filter(owner => owner)));
+    const uniqueLawFirms = Array.from(new Set(initialData.map(item => item.source.law_firm).filter(lawFirm => lawFirm)));
+    const uniqueAttorneys = Array.from(new Set(initialData.map(item => item.source.attorney_name).filter(attorney => attorney)));
 
     setOwners(uniqueOwners);
-    setLawFirms(uniqueLawFirms.filter(lawFirm => lawFirm)); // Filter out empty strings
-    setAttorneys(uniqueAttorneys.filter(attorney => attorney)); // Filter out empty strings
+    setLawFirms(uniqueLawFirms);
+    setAttorneys(uniqueAttorneys);
   }, []);
 
+  const filterData = (data) => {
+    return data.filter(item => {
+      const lowerCaseQuery = query.toLowerCase();
+      const { mark_identification, current_owner, law_firm, attorney_name, registration_number, mark_description, status_type } = item.source;
+      const descriptions = mark_description?.description || [];
+
+      return (
+        (mark_identification.toLowerCase().includes(lowerCaseQuery) ||
+          current_owner.toLowerCase().includes(lowerCaseQuery) ||
+          (law_firm || '').toLowerCase().includes(lowerCaseQuery) ||
+          (attorney_name || '').toLowerCase().includes(lowerCaseQuery) ||
+          registration_number.toLowerCase().includes(lowerCaseQuery) ||
+          descriptions.some(desc => desc.toLowerCase().includes(lowerCaseQuery))) &&
+        (selectedOwners.length === 0 || selectedOwners.includes(current_owner)) &&
+        (selectedLawFirms.length === 0 || selectedLawFirms.includes(law_firm)) &&
+        (selectedAttorneys.length === 0 || selectedAttorneys.includes(attorney_name)) &&
+        (activeStatus === 'All' || status_type.toLowerCase() === activeStatus.toLowerCase())
+      );
+    });
+  };
+
   useEffect(() => {
-    const filterData = (data, searchQuery, selectedOwners, selectedLawFirms, selectedAttorneys, status) => {
-      return data.filter(item => {
-        const lowerCaseQuery = searchQuery.toLowerCase();
-        const markIdentification = item.source.mark_identification.toLowerCase();
-        const currentOwner = item.source.current_owner.toLowerCase();
-        const lawFirm = item.source.law_firm?.toLowerCase() || '';
-        const attorney = item.source.attorney_name?.toLowerCase() || '';
-        const registrationNumber = item.source.registration_number.toLowerCase();
-        const descriptions = item.source.mark_description?.description || [];
-
-        return (
-          (markIdentification.includes(lowerCaseQuery) ||
-            currentOwner.includes(lowerCaseQuery) ||
-            lawFirm.includes(lowerCaseQuery) ||
-            attorney.includes(lowerCaseQuery) ||
-            registrationNumber.includes(lowerCaseQuery) ||
-            descriptions.some(desc => desc.toLowerCase().includes(lowerCaseQuery))) &&
-          (selectedOwners.length === 0 || selectedOwners.includes(currentOwner)) &&
-          (selectedLawFirms.length === 0 || selectedLawFirms.includes(lawFirm)) &&
-          (selectedAttorneys.length === 0 || selectedAttorneys.includes(attorney)) &&
-          (status === 'All' || item.source.status_type.toLowerCase() === status.toLowerCase())
-        );
-      });
-    };
-
-    const newFilteredData = filterData(data.hits.hits, query, selectedOwners, selectedLawFirms, selectedAttorneys, activeStatus);
+    setLoading(true);
+    const newFilteredData = filterData(data.hits.hits);
 
     if (newFilteredData.length > 0) {
       setFilteredData(newFilteredData);
+      setSearchNotFound('');
     } else {
       setSearchNotFound(`No results found for "${query}". The trademark may be available.`);
       setFilteredData([]);
@@ -70,51 +70,23 @@ function App() {
   }, [query, selectedOwners, selectedLawFirms, selectedAttorneys, activeStatus]);
 
   const handleSearch = (searchQuery) => {
-    setLoading(true);
-    setSearchNotFound('');
     setQuery(searchQuery);
   };
 
-  const handleOwnerChange = (owner, isChecked) => {
-    const updatedOwners = isChecked
-      ? [...selectedOwners, owner]
-      : selectedOwners.filter(o => o !== owner);
-
-    setSelectedOwners(updatedOwners);
-    handleSearch(query);
-  };
-
-  const handleLawFirmChange = (lawFirm, isChecked) => {
-    const updatedLawFirms = isChecked
-      ? [...selectedLawFirms, lawFirm]
-      : selectedLawFirms.filter(lf => lf !== lawFirm);
-
-    setSelectedLawFirms(updatedLawFirms);
-    handleSearch(query);
-  };
-
-  const handleAttorneyChange = (attorney, isChecked) => {
-    const updatedAttorneys = isChecked
-      ? [...selectedAttorneys, attorney]
-      : selectedAttorneys.filter(at => at !== attorney);
-
-    setSelectedAttorneys(updatedAttorneys);
-    handleSearch(query);
+  const handleFilterChange = (owners, lawFirms, attorneys, status) => {
+    setSelectedOwners(owners);
+    setSelectedLawFirms(lawFirms);
+    setSelectedAttorneys(attorneys);
+    setActiveStatus(status);
   };
 
   const handleStatusChange = (status) => {
     setActiveStatus(status);
-    handleSearch(query);
-  };
-
-  const handleQueryChange = (newQuery) => {
-    setQuery(newQuery);
-    handleSearch(newQuery);
   };
 
   return (
     <div className="container mx-auto p-4">
-      <Search onSearch={handleQueryChange} />
+      <Search onSearch={handleSearch} />
       <div className="mt-4 flex w-full">
         <div className="w-3/4 pr-4">
           {loading ? (
@@ -132,9 +104,7 @@ function App() {
             owners={owners} 
             lawFirms={lawFirms}
             attorneys={attorneys}
-            onOwnerChange={handleOwnerChange} 
-            onLawFirmChange={handleLawFirmChange} 
-            onAttorneyChange={handleAttorneyChange} 
+            onFilterChange={handleFilterChange} 
             onStatusChange={handleStatusChange} 
           />
         </div>
