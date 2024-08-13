@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrademarkCard } from './TrademarkCard';
+import { Card } from './Card';
 
 export const Cards = ({ data }) => {
   if (!Array.isArray(data) || data.length === 0) {
@@ -7,21 +7,15 @@ export const Cards = ({ data }) => {
   }
 
   return (
-    <div className="space-y-4">
-      {data.map((card, index) => (
-        <TrademarkCard
-          key={index}
-          mark={card.mark}
-          company={card.company}
-          number={card.number}
-          date={card.date}
-          status={card.status}
-          statusDate={card.statusDate}
-          renewalDate={card.renewalDate}
-          description={card.description}
-          logo={card.logo} // Assuming that each card object in data has a logo URL
-          classes={card.classes}
-        />
+    <div>
+      <div className='flex w-[4/5] justify-between px-[7rem] pt-[5rem] pb-[1.5rem] font-semibold border-b-2'>
+        <div>Mark</div>
+        <div>Details</div>
+        <div>Status</div>
+        <div>Class/Description</div>
+      </div>
+      {data.map((item, index) => (
+        <Card key={index} item={item} />
       ))}
     </div>
   );

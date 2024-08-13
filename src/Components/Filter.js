@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export const Filter = ({ owners, onOwnerChange }) => {
+export const Filter = ({ owners, onOwnerChange, onStatusChange }) => {
   const [ownerSearch, setOwnerSearch] = useState('');
   const [activeTab, setActiveTab] = useState('Owners');
   const [activeStatus, setActiveStatus] = useState('All');
@@ -16,6 +16,7 @@ export const Filter = ({ owners, onOwnerChange }) => {
 
   const handleStatusClick = (status) => {
     setActiveStatus(status);
+    onStatusChange(status);
   };
 
   const handleCheckboxChange = (owner, isChecked) => {
@@ -32,7 +33,6 @@ export const Filter = ({ owners, onOwnerChange }) => {
 
   return (
     <div>
-      {/* Status Section */}
       <div className="p-4 mx-4 mt-4 bg-white border border-gray-200 rounded-lg shadow-md">
         <h3 className="text-lg font-semibold mb-2">Status</h3>
         <div className="flex flex-wrap gap-2">
@@ -40,8 +40,9 @@ export const Filter = ({ owners, onOwnerChange }) => {
             <button
               key={index}
               onClick={() => handleStatusClick(status)}
-              className={`px-4 py-2 border-2 border-solid rounded-[1rem] 
-                ${activeStatus === status ? 'bg-blue-100 border-blue-500 text-blue-700' : 'bg-white text-black border-gray-300'}`}
+              className={`px-4 py-2 border-2 border-solid rounded-[1rem] ${
+                activeStatus === status ? 'bg-blue-100 border-blue-500 text-blue-700' : 'bg-white text-black border-gray-300'
+              }`}
             >
               {status === 'All' ? (
                 status
@@ -63,14 +64,15 @@ export const Filter = ({ owners, onOwnerChange }) => {
         </div>
       </div>
 
-      {/* Filter by Owners Section */}
       <div className="p-4 mx-4 mt-4 bg-white border border-gray-200 rounded-lg shadow-md">
         <h3 className="text-lg font-semibold mb-2">Owners</h3>
         <div className="flex gap-4 mb-4">
           {['Owners', 'Law Firms', 'Attorneys'].map((tab, index) => (
             <span
               key={index}
-              className={`cursor-pointer ${activeTab === tab ? 'text-black font-bold underline' : 'text-gray-600'}`}
+              className={`cursor-pointer ${
+                activeTab === tab ? 'text-black font-bold underline' : 'text-gray-600'
+              }`}
               onClick={() => handleTabClick(tab)}
             >
               {tab}
@@ -82,24 +84,19 @@ export const Filter = ({ owners, onOwnerChange }) => {
           placeholder="Search Owners"
           value={ownerSearch}
           onChange={handleSearchChange}
-          className="w-full px-4 py-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="w-full p-2 mb-4 border border-gray-300 rounded"
         />
-        <div className="max-h-60 overflow-y-auto">
-          {filteredOwners.map((owner, index) => (
-            <div key={index} className="flex items-center mb-2">
+        <div className="space-y-2">
+          {filteredOwners.map(owner => (
+            <label key={owner} className="flex items-center space-x-2">
               <input
                 type="checkbox"
-                id={`owner-${index}`}
-                className="mr-2 accent-blue-600"
+                checked={checkedOwners[owner] || false}
                 onChange={(e) => handleCheckboxChange(owner, e.target.checked)}
+                className="form-checkbox text-blue-600"
               />
-              <label
-                htmlFor={`owner-${index}`}
-                className={`font-medium ${checkedOwners[owner] ? 'text-blue-600' : 'text-black'}`}
-              >
-                {owner}
-              </label>
-            </div>
+              <span className="text-sm text-gray-700">{owner}</span>
+            </label>
           ))}
         </div>
       </div>
