@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 
-export const Filter = ({ owners, onOwnerChange, onStatusChange }) => {
+export const Filter = ({ owners, lawFirms, attorneys, onOwnerChange, onLawFirmChange, onAttorneyChange, onStatusChange }) => {
   const [ownerSearch, setOwnerSearch] = useState('');
   const [activeTab, setActiveTab] = useState('Owners');
   const [activeStatus, setActiveStatus] = useState('All');
   const [checkedOwners, setCheckedOwners] = useState({});
+  const [checkedLawFirms, setCheckedLawFirms] = useState({});
+  const [checkedAttorneys, setCheckedAttorneys] = useState({});
 
   const handleSearchChange = (e) => {
     setOwnerSearch(e.target.value);
@@ -12,6 +14,7 @@ export const Filter = ({ owners, onOwnerChange, onStatusChange }) => {
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
+    setOwnerSearch(''); // Clear search on tab change
   };
 
   const handleStatusClick = (status) => {
@@ -19,16 +22,32 @@ export const Filter = ({ owners, onOwnerChange, onStatusChange }) => {
     onStatusChange(status);
   };
 
-  const handleCheckboxChange = (owner, isChecked) => {
-    setCheckedOwners(prevState => ({
-      ...prevState,
-      [owner]: isChecked
-    }));
-    onOwnerChange(owner, isChecked);
+  const handleCheckboxChange = (item, isChecked, type) => {
+    if (type === 'Owners') {
+      setCheckedOwners(prevState => ({
+        ...prevState,
+        [item]: isChecked
+      }));
+      onOwnerChange(item, isChecked);
+    } else if (type === 'Law Firms') {
+      setCheckedLawFirms(prevState => ({
+        ...prevState,
+        [item]: isChecked
+      }));
+      onLawFirmChange(item, isChecked);
+    } else if (type === 'Attorneys') {
+      setCheckedAttorneys(prevState => ({
+        ...prevState,
+        [item]: isChecked
+      }));
+      onAttorneyChange(item, isChecked);
+    }
   };
 
-  const filteredOwners = owners.filter(owner =>
-    owner.toLowerCase().includes(ownerSearch.toLowerCase())
+  const filteredItems = (activeTab === 'Owners' ? owners :
+                        activeTab === 'Law Firms' ? lawFirms :
+                        attorneys).filter(item =>
+    item.toLowerCase().includes(ownerSearch.toLowerCase())
   );
 
   return (
@@ -65,7 +84,7 @@ export const Filter = ({ owners, onOwnerChange, onStatusChange }) => {
       </div>
 
       <div className="p-4 mx-4 mt-4 bg-white border border-gray-200 rounded-lg shadow-md">
-        <h3 className="text-lg font-semibold mb-2">Owners</h3>
+        <h3 className="text-lg font-semibold mb-2">{activeTab}</h3>
         <div className="flex gap-4 mb-4">
           {['Owners', 'Law Firms', 'Attorneys'].map((tab, index) => (
             <span
@@ -81,21 +100,23 @@ export const Filter = ({ owners, onOwnerChange, onStatusChange }) => {
         </div>
         <input
           type="text"
-          placeholder="Search Owners"
+          placeholder={`Search ${activeTab}`}
           value={ownerSearch}
           onChange={handleSearchChange}
           className="w-full p-2 mb-4 border border-gray-300 rounded"
         />
         <div className="space-y-2">
-          {filteredOwners.map(owner => (
-            <label key={owner} className="flex items-center space-x-2">
+          {filteredItems.map(item => (
+            <label key={item} className="flex items-center space-x-2">
               <input
                 type="checkbox"
-                checked={checkedOwners[owner] || false}
-                onChange={(e) => handleCheckboxChange(owner, e.target.checked)}
+                checked={(activeTab === 'Owners' ? checkedOwners[item] :
+                         activeTab === 'Law Firms' ? checkedLawFirms[item] :
+                         checkedAttorneys[item]) || false}
+                onChange={(e) => handleCheckboxChange(item, e.target.checked, activeTab)}
                 className="form-checkbox text-blue-600"
               />
-              <span className="text-sm text-gray-700">{owner}</span>
+              <span className="text-sm text-gray-700">{item}</span>
             </label>
           ))}
         </div>
