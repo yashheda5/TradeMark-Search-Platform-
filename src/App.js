@@ -13,8 +13,8 @@ function App() {
   const [selectedOwners, setSelectedOwners] = useState([]);
   const [selectedLawFirms, setSelectedLawFirms] = useState([]);
   const [selectedAttorneys, setSelectedAttorneys] = useState([]);
-  const [activeStatus, setActiveStatus] = useState('All');
-  const [query, setQuery] = useState('nike');
+  const [activeStatus, setActiveStatus] = useState('');
+  const [query, setQuery] = useState('all'); // Default query to "all"
   const [owners, setOwners] = useState([]);
   const [lawFirms, setLawFirms] = useState([]);
   const [attorneys, setAttorneys] = useState([]);
@@ -22,11 +22,22 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+
+      const trimmedQuery = query.trim();
+
+      // If the trimmed query is empty, set searchNotFound and skip the API call
+      if (trimmedQuery.length === 0) {
+        setSearchNotFound('Enter what you want to search.');
+        setFilteredData([]);
+        setLoading(false);
+        return;
+      }
+
       try {
-        const results = await performSearch(query);
+        const results = await performSearch(trimmedQuery);
+
         console.log('Filtered Results:', results); // Log results to inspect structure
 
-        // Extract unique values for filters
         const uniqueOwners = Array.from(new Set(results.map(item => item._source?.current_owner).filter(owner => owner)));
         const uniqueLawFirms = Array.from(new Set(results.map(item => item._source?.law_firm).filter(lawFirm => lawFirm)));
         const uniqueAttorneys = Array.from(new Set(results.map(item => item._source?.attorney_name).filter(attorney => attorney)));
@@ -35,17 +46,21 @@ function App() {
         setLawFirms(uniqueLawFirms);
         setAttorneys(uniqueAttorneys);
 
-        const newFilteredData = filterData(results);
+        const newFilteredData = filterData(results, trimmedQuery);
 
         if (newFilteredData.length > 0) {
           setFilteredData(newFilteredData);
           setSearchNotFound('');
         } else {
-          setSearchNotFound(`No results found for "${query}". The trademark may be available.`);
           setFilteredData([]);
+          setSearchNotFound('No search results found.');
         }
       } catch (error) {
-        setSearchNotFound('An error occurred while fetching data.');
+        if (error.message === '404') {
+          setSearchNotFound(`No results found for "${trimmedQuery}". The trademark may be available.`);
+        } else {
+          setSearchNotFound('An error occurred during the search.');
+        }
         setFilteredData([]);
       }
       setLoading(false);
@@ -54,11 +69,10 @@ function App() {
     fetchData();
   }, [query, selectedOwners, selectedLawFirms, selectedAttorneys, activeStatus]);
 
-  const filterData = (data) => {
+  const filterData = (data, lowerCaseQuery) => {
     return data.filter(item => {
-      const lowerCaseQuery = query.toLowerCase();
       const { mark_identification = '', current_owner = '', law_firm = '', attorney_name = '', registration_number = '', mark_description = {}, status_type = '' } = item._source || {};
-      const descriptions = mark_description.mark_description_description || []; // Adjusted to correct property
+      const descriptions = mark_description.mark_description_description || [];
 
       return (
         (mark_identification.toLowerCase().includes(lowerCaseQuery) ||
@@ -76,7 +90,7 @@ function App() {
   };
 
   const handleSearch = (searchQuery) => {
-    setQuery(searchQuery);
+    setQuery(searchQuery.trim());
   };
 
   const handleFilterChange = (owners, lawFirms, attorneys, status) => {

@@ -1,70 +1,49 @@
-# Getting Started with Create React App
+# Trademark Search Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The **Trademark Search Application** is a robust **React** based web app designed to provide comprehensive trademark data retrieval and filtering capabilities. Utilizing React for its dynamic UI, the application integrates Axios for seamless API communication with the **Trademarkia API**, ensuring efficient data fetching and error handling. The user interface is styled with **Tailwind CSS** for a modern and responsive design, and **Postman** is used for testing API endpoints to ensure reliability. The core functionality includes a search feature where users input queries that trigger API requests handled by the **performSearch** function in **api.js**, while the **App.js** component manages state updates, loading indicators, and error messages. The data is displayed in **TrademarkCard** components, which showcase trademark details such as images, names, statuses, and descriptions. Filter options, managed by the **Filter** component, allow users to refine search results by categories like owners, law firms, and attorneys, and the entire system is designed to deliver an intuitive and user-friendly experience.
 
-## Available Scripts
+## 🎯 Live Demo
 
-In the project directory, you can run:
+Check out the live demo of the app hosted on Vercel:  
+[Top Courses Filter & Display App Live Demo](https://top-courses-filter-display-app.vercel.app/)
 
-### `npm start`
+## 📦 Direct Download
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Download the latest version of the project as a ZIP file:  
+[Download ZIP](https://github.com/yashheda5/Top-Courses-Filter-Display-App/archive/refs/heads/main.zip)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🚀 Getting Started
 
-### `npm test`
+To set up the project locally, follow these steps:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Clone the Repository**  
+   Clone the repository to your local machine:
+   ```sh
+   git clone https://github.com/yashheda5/Top-Courses-Filter-Display-App.git
+    ```
 
-### `npm run build`
+2. **Navigate to the project directory:**
+    ```sh
+    cd Top-Courses-Filter-Display-App
+    ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. **Install the required packages:**
+    ```sh
+    npm install
+    ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. **Start the development server:**
+    ```sh
+    npm run start
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. **Open the project in your browser at [`http://localhost:3000`](http://localhost:3000) to view your project**.
 
-### `npm run eject`
+6. **To build the app for production, run:**
+    ```sh
+    npm run build
+    ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🤝 Contributing
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+We welcome contributions to this project! If you have suggestions, improvements, or find any issues, please open an issue or submit a pull request.

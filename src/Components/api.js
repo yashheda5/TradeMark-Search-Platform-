@@ -27,6 +27,13 @@ export const performSearch = async (query) => {
     console.log(response.data.body);
     return response.data.body.hits.hits; // Extract the hits array
   } catch (error) {
-    throw error;
+    if (error.response && error.response.status === 404) {
+      const response = "404";
+      return response;
+    } else {
+      // Handle other errors
+      console.error('An error occurred while performing the search:', error.message);
+      throw error;
+    }
   }
 };
