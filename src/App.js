@@ -14,7 +14,7 @@ function App() {
   const [selectedLawFirms, setSelectedLawFirms] = useState([]);
   const [selectedAttorneys, setSelectedAttorneys] = useState([]);
   const [activeStatus, setActiveStatus] = useState('All');
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('nike');
   const [owners, setOwners] = useState([]);
   const [lawFirms, setLawFirms] = useState([]);
   const [attorneys, setAttorneys] = useState([]);

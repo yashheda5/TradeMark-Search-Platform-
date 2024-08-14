@@ -53,7 +53,7 @@ export const Filter = ({ owners, lawFirms, attorneys, onFilterChange, onStatusCh
   );
 
   return (
-    <div>
+    <div >
       <div className="p-4 mx-4 mt-4 bg-white border border-gray-200 rounded-lg shadow-md">
         <h3 className="text-lg font-semibold mb-2">Status</h3>
         <div className="flex flex-wrap gap-2">

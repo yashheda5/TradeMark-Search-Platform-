@@ -7,8 +7,8 @@ export const Cards = ({ data }) => {
   }
 
   return (
-    <div className='rounded-lg shadow-2xl translate-x-4 '>
-      <div className='flex w-[4/5] justify-between px-[7rem] pt-[5rem] pb-[1.5rem] font-semibold border-b-2'>
+    <div className='rounded-lg shadow-[0px_10px_20px_rgba(0,0,0,0.3)] translate-x-5 '>
+      <div className='flex text-xl justify-between px-[6rem] pt-[5rem] pb-[1.5rem] font-semibold border-b-[0.35rem] '>
         <div>Mark</div>
         <div>Details</div>
         <div>Status</div>

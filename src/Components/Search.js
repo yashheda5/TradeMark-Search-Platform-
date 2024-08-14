@@ -4,6 +4,7 @@ import { CiSearch } from "react-icons/ci";
 
 export const Search = ({ onSearch }) => {
   const [query, setQuery] = useState('');
+  const [isFocused, setIsFocused] = useState(false); // New state to track input focus
 
   const handleChange = (e) => {
     setQuery(e.target.value);
@@ -11,7 +12,7 @@ export const Search = ({ onSearch }) => {
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      onSearch(query);
+      handleSearch();
     }
   };
 
@@ -30,10 +31,12 @@ export const Search = ({ onSearch }) => {
           value={query} 
           onChange={handleChange} 
           onKeyPress={handleKeyPress} 
+          onFocus={() => setIsFocused(true)} // Set focus state to true on input focus
+          onBlur={() => setIsFocused(false)} // Set focus state to false on input blur
           placeholder="&nbsp;&nbsp;&nbsp;&nbsp; Search Trademark Here eg. Nike" 
           className="w-1/2 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-600"
         />
-        {!query && <CiSearch className='absolute translate-x-3 w-[2rem] h-[2rem] text-gray-500' />}
+        {!isFocused && !query && <CiSearch className='absolute translate-x-3 w-[2rem] h-[2rem] text-gray-500' />}
         <button 
           onClick={handleSearch} 
           className="ml-4 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600"

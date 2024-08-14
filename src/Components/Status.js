@@ -16,7 +16,7 @@ export const Status = ({ status }) => {
   };
 
   return (
-    <div className={`${getStatusClass(status)} capitalize translate-x-3`}>
+    <div className={`${getStatusClass(status)} capitalizemax w-[25%] translate-x-[5.5rem] mx-auto items-center justify-center`}>
       {status}
     </div>
   );
