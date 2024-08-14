@@ -4,24 +4,41 @@ The **Trademark Search Application** is a robust **React** based web app designe
 
 ## Features
 
-* Search Functionality: </br>
-Users can perform searches for trademarks by entering specific query terms. The application efficiently handles input by trimming any leading or trailing spaces from the search query to ensure accurate results. It then fetches and displays trademarks that closely match the entered search term, enhancing the search experience by focusing on relevant data.
+* Search Execution: </br>
+Users initiate the process by entering a search term into the input field. The application then trims any unnecessary spaces from the query to ensure precision. This refined query is sent through the performSearch function, which interacts with the Trademarkia API to fetch relevant trademark data.
 
-* Filtering Options: </br>
-To further refine search results, users can apply various filters. These include selecting from a list of owners, law firms, and attorneys through checkboxes, allowing for a targeted search based on these entities. Additionally, users can filter results by trademark status, with options such as Registered, Pending, Abandoned, and other statuses, helping users to categorize and view trademarks according to their current processing state.
+* Filtering Mechanism: </br>
+Once the data is retrieved, users can further refine their search results using various filters. These filters allow selection by owners, law firms, attorneys, and trademark status (such as Registered, Pending, or Abandoned). Users interact with checkboxes to apply these filters, making it easier to narrow down results according to specific criteria.
 
-* Detailed Trademark Information: </br>
- Each trademark entry is presented with comprehensive details. This includes identification of the mark, the current owner, the registration number, registration date, status of the trademark, and a descriptive overview. This thorough information helps users understand each trademark's context and status effectively.
+* Display of Trademark Details: </br>
+The application then presents the filtered trademark data in a card format. Each card displays key details including the mark identification, owner information, registration number, registration date, status, and a brief description. This structured display ensures that users have a clear understanding of each trademark.
  
-* User-Friendly Interface: </br>
-The application features a user-friendly interface that makes navigating search results and filters intuitive. The design emphasizes ease of use, ensuring users can effectively interact with the app without encountering difficulties.
+* User Interaction: </br>
+The interface is designed to be straightforward and user-friendly. Users can easily navigate through search results and apply filters without encountering any complex interactions, making the entire process smooth and intuitive.
+
+## Project Structure
+
+├── src
+│   ├── Components
+│   │   ├── Search.js
+│   │   ├── Filter.js
+│   │   ├── Cards.js
+│   │   ├── Card.js
+│   │   ├── Image.js
+│   │   ├── Details.js
+│   │   ├── Description.js
+│   │   ├── Status.js
+│   │   └── api.js
+│   ├── App.js
+│   ├── App.css
+│   └── index.js
 
 
 
 ## 🎯 Live Demo
 
 Check out the live demo of the app hosted on Vercel:  
-[Top Courses Filter & Display App Live Demo](https://top-courses-filter-display-app.vercel.app/)
+[Trademark Search Application Live Demo](https://trademark-search-application.vercel.app/)
 
 ## 📦 Direct Download
 
