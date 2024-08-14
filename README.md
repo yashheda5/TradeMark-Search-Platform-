@@ -16,16 +16,7 @@ To further refine search results, users can apply various filters. These include
 * User-Friendly Interface: </br>
 The application features a user-friendly interface that makes navigating search results and filters intuitive. The design emphasizes ease of use, ensuring users can effectively interact with the app without encountering difficulties.
 
-## How It Works
-* Search Component: Users input their search query into the search bar. This action triggers a request to the Trademarkia API to find trademarks that match the query.
 
-* API Integration: The performSearch function in api.js handles this by sending a POST request to the Trademarkia API. This request includes the user’s search query along with any additional parameters needed for the search.
-
-* Data Handling: Once the API responds, the App.js component processes the received data. It extracts the unique filter options (e.g., owners, law firms, attorneys, and statuses) from the search results and updates the component’s state accordingly.
-
-* Filtering: Users can then apply filters using the Filter component. This component allows them to refine the search results based on criteria such as owners, law firms, attorneys, and trademark statuses (e.g., Registered, Pending, Abandoned). The application dynamically updates the results based on these filters.
-
-* Display: The filtered trademark data is rendered by the Cards component. Each card presents the trademark information in a structured format, including an image, details such as the mark’s name, current owner, registration number, registration date, status, and a brief description.
 
 ## 🎯 Live Demo
 
