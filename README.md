@@ -3,7 +3,9 @@
 The **Trademark Search Application** is a robust **React** based web app designed to provide comprehensive trademark data retrieval and filtering capabilities. Utilizing React for its dynamic UI, the application integrates Axios for seamless API communication with the **Trademarkia API**, ensuring efficient data fetching and error handling. The user interface is styled with **Tailwind CSS** for a modern and responsive design, and **Postman** is used for testing API endpoints to ensure reliability. The core functionality includes a search feature where users input queries that trigger API requests handled by the **performSearch** function in **api.js**, while the **App.js** component manages state updates, loading indicators, and error messages. The data is displayed in **TrademarkCard** components, which showcase trademark details such as images, names, statuses, and descriptions. Filter options, managed by the **Filter** component, allow users to refine search results by categories like owners, law firms, and attorneys, and the entire system is designed to deliver an intuitive and user-friendly experience.
 
 ## Features
-1. **Search Functionality:**
+
+1. **Search Functionality:** </br>
+
  Users can search for trademarks by entering a query. The app trims spaces and fetches results that match the search term.
 
 ## 🎯 Live Demo
