@@ -17,6 +17,7 @@ The application then presents the filtered trademark data in a card format. Each
 The interface is designed to be straightforward and user-friendly. Users can easily navigate through search results and apply filters without encountering any complex interactions, making the entire process smooth and intuitive.
 
 ## Project Structure
+```
 
 ├── src
 │   ├── Components
@@ -32,7 +33,7 @@ The interface is designed to be straightforward and user-friendly. Users can eas
 │   ├── App.js
 │   ├── App.css
 │   └── index.js
-
+```
 
 
 ## 🎯 Live Demo
