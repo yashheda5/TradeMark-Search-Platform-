@@ -7,6 +7,7 @@ import { Spinner } from './Components/Spinner';
 import { performSearch } from './Components/api';
 
 function App() {
+  const [initialData, setInitialData] = useState([]); // Store initial data separately
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchNotFound, setSearchNotFound] = useState('');
@@ -14,29 +15,17 @@ function App() {
   const [selectedLawFirms, setSelectedLawFirms] = useState([]);
   const [selectedAttorneys, setSelectedAttorneys] = useState([]);
   const [activeStatus, setActiveStatus] = useState('');
-  const [query, setQuery] = useState('all'); // Default query to "all"
+  const [query, setQuery] = useState(''); // Default query to an empty string
   const [owners, setOwners] = useState([]);
   const [lawFirms, setLawFirms] = useState([]);
   const [attorneys, setAttorneys] = useState([]);
 
+  // Fetch all data on initial load
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchInitialData = async () => {
       setLoading(true);
-
-      const trimmedQuery = query.trim();
-
-      // If the trimmed query is empty, set searchNotFound and skip the API call
-      if (trimmedQuery.length === 0) {
-        setSearchNotFound('Enter what you want to search.');
-        setFilteredData([]);
-        setLoading(false);
-        return;
-      }
-
       try {
-        const results = await performSearch(trimmedQuery);
-
-        console.log('Filtered Results:', results); // Log results to inspect structure
+        const results = await performSearch('all'); // Fetch all data
 
         const uniqueOwners = Array.from(new Set(results.map(item => item._source?.current_owner).filter(owner => owner)));
         const uniqueLawFirms = Array.from(new Set(results.map(item => item._source?.law_firm).filter(lawFirm => lawFirm)));
@@ -46,7 +35,29 @@ function App() {
         setLawFirms(uniqueLawFirms);
         setAttorneys(uniqueAttorneys);
 
-        const newFilteredData = filterData(results, trimmedQuery);
+        setInitialData(results); // Store the initial data
+        setFilteredData(results); // Also display it initially
+        setSearchNotFound(''); // Clear any previous "not found" messages
+      } catch (error) {
+        setSearchNotFound('An error occurred while fetching data.');
+      }
+      setLoading(false);
+    };
+
+    fetchInitialData();
+  }, []);
+
+  // Apply filters whenever query, selectedOwners, etc. change
+  useEffect(() => {
+    if (!initialData.length) return; // Do nothing if initial data is not loaded yet
+
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const results = query.trim() ? await performSearch(query.trim()) : initialData;
+
+        const newFilteredData = filterData(results, query.trim().toLowerCase());
 
         if (newFilteredData.length > 0) {
           setFilteredData(newFilteredData);
@@ -56,11 +67,7 @@ function App() {
           setSearchNotFound('No search results found.');
         }
       } catch (error) {
-        if (error.message === '404') {
-          setSearchNotFound(`No results found for "${trimmedQuery}". The trademark may be available.`);
-        } else {
-          setSearchNotFound('An error occurred during the search.');
-        }
+        setSearchNotFound('An error occurred during the search.');
         setFilteredData([]);
       }
       setLoading(false);
